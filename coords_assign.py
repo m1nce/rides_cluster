@@ -18,7 +18,6 @@ Attributes:
 Todo:
     * Add error handling for missing or malformed CSV files.
     * Implement a method to delete coordinates for a location.
-    * Allow specification of output file path in `push_csv`.
 """
 
 import csv
@@ -71,10 +70,10 @@ class CoordsAssign():
         """
         return self.coords
     
-    def push_csv(self):
+    def push_csv(self, file_path='rides_cluster/location_coords.csv'):
         """
         Writes the updated coordinates to the CSV file.
         """
-        with open("location_coords.csv", "w") as f:
+        with open(file_path, "w") as f:
             w = csv.writer(f)
             w.writerows(self.coords.items())
