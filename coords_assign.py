@@ -1,4 +1,28 @@
+"""
+This module provides the `CoordsAssign` class for managing location coordinates.
+
+The `CoordsAssign` class allows reading, updating, and saving location coordinates
+from a CSV file. It can also integrate these coordinates into a DataFrame. The class
+maintains a dictionary of location coordinates and provides methods to update this
+dictionary, add coordinates as a DataFrame column, and push changes back to the CSV.
+
+Usage Example:
+    coords = CoordsAssign('path/to/location_coords.csv')
+    coords.update_coords('New Location', '123.45, 67.89')
+    df_with_coords = coords.coords_column('path/to/other_file.csv')
+    coords.push_csv()
+
+Attributes:
+    None
+
+Todo:
+    * Add error handling for missing or malformed CSV files.
+    * Implement a method to delete coordinates for a location.
+    * Allow specification of output file path in `push_csv`.
+"""
+
 import csv
+import pandas as pd
 
 class CoordsAssign():
     """
@@ -8,11 +32,11 @@ class CoordsAssign():
         coords (dict): A dictionary to store the location and their coordinates.
     """
 
-    def __init__(self):
+    def __init__(self, file_path='rides_cluster/location_coords.csv'):
         """
         Initializes the CoordsAssign object and reads the coordinates from a CSV file.
         """
-        reader = csv.reader(open('rides_cluster/location_coords.csv', 'r'))
+        reader = csv.reader(open(file_path, 'r'))
         self.coords = {}
         for row in reader:
             k, v = row
@@ -27,6 +51,16 @@ class CoordsAssign():
             coords (str): The coordinates to assign to the location.
         """
         self.coords[location] = coords
+
+    def coords_column(self, file_path):
+        """
+        Adds a column of coordinates to the DataFrame.
+        
+        Args:
+            file_name (str): The name of the CSV file to read.
+        """
+        df = pd.read_csv(file_path)
+        return df.assign(coordinates=df['location'].map(self.coords))
 
     def get_coords(self):
         """
