@@ -31,7 +31,7 @@ class CoordsAssign():
         coords (dict): A dictionary to store the location and their coordinates.
     """
 
-    def __init__(self, file_path='rides_cluster/location_coords.csv'):
+    def __init__(self, file_path='location_coords.csv'):
         """
         Initializes the CoordsAssign object and reads the coordinates from a CSV file.
         """
@@ -70,7 +70,7 @@ class CoordsAssign():
         """
         return self.coords
     
-    def push_csv(self, file_path='rides_cluster/location_coords.csv'):
+    def push_csv(self, file_path='location_coords.csv'):
         """
         Writes the updated coordinates to the CSV file.
         """
